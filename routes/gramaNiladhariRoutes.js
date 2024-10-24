@@ -13,4 +13,10 @@ router.get(
   gramaNiladhariController.getGramaNiladhariDivisionsByDistrict
 );
 
+// Route to create a new Grama Niladhari Division
+router.post(
+  "/create-account",
+  gramaNiladhariController.createGramaNiladhariAccount
+);
+
 module.exports = router;
