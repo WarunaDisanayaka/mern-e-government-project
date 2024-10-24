@@ -19,4 +19,6 @@ router.post(
   gramaNiladhariController.createGramaNiladhariAccount
 );
 
+router.post("/login", gramaNiladhariController.loginGramaNiladhari);
+
 module.exports = router;

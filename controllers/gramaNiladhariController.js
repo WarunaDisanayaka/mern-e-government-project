@@ -1,4 +1,5 @@
 const db = require("../config/db");
+const jwt = require("jsonwebtoken");
 
 // Controller to create a new Grama Niladhari Division
 exports.createGramaNiladhariDivision = (req, res) => {
@@ -120,4 +121,57 @@ const bcrypt = require("bcrypt");
 const hashPassword = (password) => {
   const saltRounds = 10;
   return bcrypt.hashSync(password, saltRounds); // Synchronous version for simplicity
+};
+
+// Controller to login a Grama Niladhari Account
+exports.loginGramaNiladhari = (req, res) => {
+  const { email, password } = req.body;
+
+  // Check if email exists in the database (case-insensitive)
+  const checkQuery =
+    "SELECT * FROM gramanildhari WHERE LOWER(email) = LOWER(?)";
+
+  db.query(checkQuery, [email], (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+
+    // If email is not found
+    if (results.length === 0) {
+      return res
+        .status(400)
+        .json({ message: "Email or password is incorrect." });
+    }
+
+    // Get the user details (assuming only one account per email)
+    const user = results[0];
+
+    // Compare provided password with the hashed password stored in the database
+    const isPasswordValid = bcrypt.compareSync(password, user.password);
+
+    if (!isPasswordValid) {
+      return res
+        .status(400)
+        .json({ message: "Email or password is incorrect." });
+    }
+
+    // If password is valid, generate a JWT token
+    const token = jwt.sign(
+      { id: user.id, email: user.email, division_id: user.division_id },
+      process.env.JWT_SECRET, // Ensure this is set in your environment
+      { expiresIn: "1h" } // Token expiry time
+    );
+
+    // Respond with user details and the token
+    res.status(200).json({
+      message: "Login successful",
+      token: token,
+      user: {
+        id: user.id,
+        email: user.email,
+        phone: user.phone,
+        division_id: user.division_id,
+      },
+    });
+  });
 };
