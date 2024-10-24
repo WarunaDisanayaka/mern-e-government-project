@@ -8,4 +8,9 @@ router.post("/", gramaNiladhariController.createGramaNiladhariDivision);
 // Route to get all Grama Niladhari Divisions
 router.get("/", gramaNiladhariController.getAllGramaNiladhariDivisions);
 
+router.get(
+  "/:district_id",
+  gramaNiladhariController.getGramaNiladhariDivisionsByDistrict
+);
+
 module.exports = router;
