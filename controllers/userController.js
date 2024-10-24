@@ -10,6 +10,12 @@ exports.createUser = (req, res) => {
     religion,
     gender,
     is_srilankan,
+    income,
+    family_members,
+    language,
+    grama_niladhari_division,
+    is_receiving_benefits,
+    current_jobs,
   } = req.body;
 
   // Check if NIC already exists
@@ -27,9 +33,13 @@ exports.createUser = (req, res) => {
 
     // If NIC is unique, insert the new user record
     const insertQuery = `
-            INSERT INTO Users (full_name, address, nic, father_name, father_address, religion, gender, is_srilankan) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        `;
+      INSERT INTO Users (
+        full_name, address, nic, father_name, father_address, religion, gender, 
+        is_srilankan, created_at, income, family_members, language, 
+        grama_niladhari_division, is_receiving_benefits, current_jobs
+      ) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?, ?)
+    `;
     db.query(
       insertQuery,
       [
@@ -41,6 +51,12 @@ exports.createUser = (req, res) => {
         religion,
         gender,
         is_srilankan,
+        income,
+        family_members,
+        language,
+        grama_niladhari_division,
+        is_receiving_benefits,
+        current_jobs,
       ],
       (err, results) => {
         if (err) {
@@ -56,6 +72,13 @@ exports.createUser = (req, res) => {
           religion,
           gender,
           is_srilankan,
+          created_at: new Date(), // Adds the creation date to the response
+          income,
+          family_members,
+          language,
+          grama_niladhari_division,
+          is_receiving_benefits,
+          current_jobs,
         });
       }
     );
@@ -99,6 +122,12 @@ exports.updateUser = (req, res) => {
     religion,
     gender,
     is_srilankan,
+    income,
+    family_members,
+    language,
+    grama_niladhari_division,
+    is_receiving_benefits,
+    current_jobs,
   } = req.body;
 
   // Check if the NIC already exists (excluding the current user)
@@ -116,10 +145,12 @@ exports.updateUser = (req, res) => {
 
     // Update the user if NIC is unique
     const updateQuery = `
-            UPDATE Users 
-            SET full_name = ?, address = ?, nic = ?, father_name = ?, father_address = ?, religion = ?, gender = ?, is_srilankan = ?
-            WHERE id = ?
-        `;
+      UPDATE Users 
+      SET full_name = ?, address = ?, nic = ?, father_name = ?, father_address = ?, 
+          religion = ?, gender = ?, is_srilankan = ?, income = ?, family_members = ?, 
+          language = ?, grama_niladhari_division = ?, is_receiving_benefits = ?, current_jobs = ?
+      WHERE id = ?
+    `;
     db.query(
       updateQuery,
       [
@@ -131,6 +162,12 @@ exports.updateUser = (req, res) => {
         religion,
         gender,
         is_srilankan,
+        income,
+        family_members,
+        language,
+        grama_niladhari_division,
+        is_receiving_benefits,
+        current_jobs,
         id,
       ],
       (err, results) => {
