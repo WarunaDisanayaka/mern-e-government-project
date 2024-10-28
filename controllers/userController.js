@@ -94,11 +94,12 @@ exports.getAllUsers = (req, res) => {
     res.status(200).json(results);
   });
 };
-
 exports.getUserNIC = (req, res) => {
-  const { id } = req.params;
-  const query = "SELECT * FROM Users WHERE nic = ?";
-  db.query(query, [id], (err, results) => {
+  const { id, division_id } = req.params; // Retrieve both NIC and division_id
+  const query =
+    "SELECT * FROM Users WHERE nic = ? AND grama_niladhari_division = ?";
+
+  db.query(query, [id, division_id], (err, results) => {
     if (err) {
       return res.status(500).json({ error: err.message });
     }

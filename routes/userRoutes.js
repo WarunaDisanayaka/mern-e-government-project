@@ -9,7 +9,7 @@ router.post("/create", userController.createUser);
 router.get("/all", userController.getAllUsers);
 
 // Route to retrieve a single user by ID
-router.get("/:id", userController.getUserNIC);
+router.get("/:id/:division_id", userController.getUserNIC);
 
 // Route to update a user by ID
 router.put("/:id", userController.updateUser);
