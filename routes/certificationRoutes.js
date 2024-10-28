@@ -16,4 +16,9 @@ router.get(
   certificationController.getCertificationRequestsByDivisionId
 );
 
+router.put(
+  "/certification-requests/:id",
+  certificationController.updateCertificationRequestStatus
+);
+
 module.exports = router;
