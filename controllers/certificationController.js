@@ -100,3 +100,33 @@ exports.getCertificationRequestsByDivisionId = (req, res) => {
     res.status(200).json(results);
   });
 };
+
+// Controller to update the status of a certification request by ID
+exports.updateCertificationRequestStatus = (req, res) => {
+  const requestId = req.params.id; // Extract the request ID from the URL
+  const { status } = req.body; // Get the new status from the request body
+
+  // Validate the status input
+  if (!status) {
+    return res.status(400).json({ message: "Status is required." });
+  }
+
+  // SQL query to update the certification request status
+  const query =
+    "UPDATE certification_requests SET status = ?, updated_at = NOW() WHERE id = ?";
+  db.query(query, [status, requestId], (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+
+    if (results.affectedRows === 0) {
+      return res
+        .status(404)
+        .json({ message: "Certification request not found." });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Certification request status updated successfully." });
+  });
+};
