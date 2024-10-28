@@ -4,6 +4,9 @@ const db = require("./config/db"); // Import the database connection
 const districtRoutes = require("./routes/districtRoutes");
 const gramaNiladhariRoutes = require("./routes/gramaNiladhariRoutes");
 const userRoutes = require("./routes/userRoutes");
+const accountRoutes = require("./routes/accountRoutes");
+const externalUserRoutes = require("./routes/externalUserRoutes");
+const certificationRoutes = require("./routes/certificationRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -18,6 +21,9 @@ app.use(express.json());
 app.use("/api/districts", districtRoutes);
 app.use("/api/grama-niladhari", gramaNiladhariRoutes);
 app.use("/api", userRoutes);
+app.use("/api", accountRoutes);
+app.use("/api", externalUserRoutes);
+app.use("/api", certificationRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
